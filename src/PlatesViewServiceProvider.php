@@ -18,7 +18,6 @@ final class PlatesViewServiceProvider extends AbstractServiceProvider
     public const string DEFAULT_EXTENSION = '.php';
 
     public function __construct(
-        private readonly string $root,
         private readonly string $viewsPath,
         private readonly string $defaultExtension = self::DEFAULT_EXTENSION,
     ) {}
@@ -43,7 +42,7 @@ final class PlatesViewServiceProvider extends AbstractServiceProvider
             /** @var ViewRegistry $viewRegistry */
             $viewRegistry = $container->get(ViewRegistry::class);
             $this->addExtensions($engine, $viewRegistry->extensions()->all());
-            $this->addFolders($engine, $this->root, $viewRegistry->paths()->all());
+            $this->addFolders($engine, $viewRegistry->paths()->all());
 
             return new PlatesView($engine);
         })->setShared(true);
@@ -64,16 +63,12 @@ final class PlatesViewServiceProvider extends AbstractServiceProvider
     }
 
     /**
-     * @param array<string, string> $namespaces
+     * @param array<string, string> $namespaces namespace => absolute filesystem path
      */
-    private function addFolders(Engine $engine, string $rootPath, array $namespaces): void
+    private function addFolders(Engine $engine, array $namespaces): void
     {
         foreach ($namespaces as $namespace => $path) {
-            $engine->addFolder(
-                $namespace,
-                rtrim($rootPath, '/') . '/' . ltrim($path, '/'),
-                true,
-            );
+            $engine->addFolder($namespace, $path, true);
         }
     }
 }

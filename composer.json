@@ -1,7 +1,6 @@
 {
     "name": "php-concept/extension-view-plates",
     "description": "Concept View Plates engine — PlatesView implementation",
-    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
