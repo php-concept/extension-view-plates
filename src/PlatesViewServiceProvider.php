@@ -2,6 +2,7 @@
 
 namespace Concept\Extensions\ViewPlates;
 
+use Concept\Core\Container\ContainerDependency;
 use Concept\Extensions\Event\Events\ExtensionAwakened;
 use Concept\Extensions\Event\Support\EventDispatcherResolver;
 use Concept\Extensions\View\Contracts\ViewInterface;
@@ -40,7 +41,7 @@ final class PlatesViewServiceProvider extends AbstractServiceProvider
             $engine = new Engine($this->viewsPath, ltrim($this->defaultExtension, '.'));
 
             /** @var ViewRegistry $viewRegistry */
-            $viewRegistry = $container->get(ViewRegistry::class);
+            $viewRegistry = ContainerDependency::get($container, ViewRegistry::class);
             $this->addExtensions($engine, $viewRegistry->extensions()->all());
             $this->addFolders($engine, $viewRegistry->paths()->all());
 
